@@ -13,4 +13,8 @@ Route::apiResource('todo-list', TodoListController::class);
 // Route::delete('todo-list/{list}', [TodoListController::class, 'destroy'])->name('todo-list.destroy');
 // Route::patch('todo-list/{list}', [TodoListController::class, 'update'])->name('todo-list.update');
 
-Route::get('task', [TaskController::class, 'index'])->name('task.index');
+Route::apiResource('task', TaskController::class);
+
+// Route::get('task', [TaskController::class, 'index'])->name('task.index');
+// Route::post('task', [TaskController::class, 'store'])->name('task.store');
+// Route::delete('task/{task}', [TaskController::class, 'destroy'])->name('task.destroy');
