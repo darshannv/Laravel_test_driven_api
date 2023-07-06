@@ -20,8 +20,11 @@ class LoginController extends Controller
         }
 
 
+        $token = $user->createToken('api');
+        //dd($token);
+
         return response([
-            'token' => 'Hello'
+            'token' => $token->plainTextToken
         ]);
         
     }
