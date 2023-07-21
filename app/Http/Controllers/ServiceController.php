@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TaskResource;
 use ZipArchive;
 use Google\Client;
 use App\Models\Task;
@@ -35,7 +36,7 @@ class ServiceController extends Controller
         $access_token = $client->fetchAccessTokenWithAuthCode($request->code);
 
         $service = WebService::create(['user_id' => auth()->id(),
-        'token' => json_encode(['access_token' => $access_token]),
+        'token' => $access_token,
         'name' => 'google-drive'
         ]);
 
@@ -51,7 +52,7 @@ class ServiceController extends Controller
 
          //create a json file with this data
         $jsonFileName = 'task_dump.json';
-        Storage::put("/public/temp/$jsonFileName", $tasks->toJson());
+        Storage::put("/public/temp/$jsonFileName", TaskResource::collection($tasks)->toJson());
 
         //create a zip file with this json file
 
@@ -60,7 +61,7 @@ class ServiceController extends Controller
 
         if($zip->open($zipFileName, ZipArchive::CREATE) === true) {
             $filePath = storage_path('app/public/temp/'. $jsonFileName);
-            $zip->addFile($filePath);
+            $zip->addFile($filePath, $jsonFileName);
         }
         $zip->close();
         //send this zip to drive
