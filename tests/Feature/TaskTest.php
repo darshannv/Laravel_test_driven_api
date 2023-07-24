@@ -23,8 +23,9 @@ class TaskTest extends TestCase
     {
         $list = $this->createTodoList();
         $list2 = $this->createTodoList();
+        $label = $this->CreateLabel(['user_id' => auth()->id()]);
         //Preparation
-        $task = $this->createTask(['todo_list_id' => $list->id]);
+        $task = $this->createTask(['todo_list_id' => $list->id, 'label_id' => $label->id]);
         $this->createTask(['todo_list_id' => $list2->id]);
         //action
         $response = $this->getJson(route('todo-list.task.index', $list->id))->assertOk()->json('data');

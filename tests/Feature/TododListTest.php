@@ -40,13 +40,13 @@ class TododListTest extends TestCase
        //dd($list);
 
         $this->createTodoList();
-        $response = $this->getJson(route('todo-list.index'));
+        $response = $this->getJson(route('todo-list.index'))->json('data');
 
         //dd($reponse);
 
-        $this->assertEquals(1, count($response->json()));
+        $this->assertEquals(1, count($response));
 
-        $this->assertEquals('my-list', $response->json()[0]['name']);
+        $this->assertEquals('my-list', $response[0]['name']);
     }
 
 
@@ -54,7 +54,7 @@ class TododListTest extends TestCase
 
         $response = $this->getJson(route('todo-list.show', $this->list->id))
                     ->assertOk()
-                    ->json();
+                    ->json('data');
 
         //$response->assertStatus(200);
 
@@ -68,7 +68,7 @@ class TododListTest extends TestCase
 
        $response = $this->postJson(route('todo-list.store', ['name' => $list->name]))
             ->assertCreated()
-            ->json();
+            ->json('data');
 
             //dd($response['name']);
         $this->assertEquals($list->name, $response['name']);
